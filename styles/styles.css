@@ -1,3 +1,19 @@
+* {
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+}
 h1 {
     color: rebeccapurple;
+}
+.memory-grid{ 
+    display:flex;
+    flex-wrap: wrap;
+    height: 408px;
+    width: 408px;
+}
+.memory-grid img{
+    width: 100px;
+    height: 100px;
+    margin:1px
 }
