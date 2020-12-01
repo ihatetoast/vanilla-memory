@@ -2,9 +2,29 @@
     margin: 0;
     padding: 0; 
     box-sizing: border-box;
+    
+}
+html {
+    font-family: 'Roboto', sans-serif;
 }
 h1 {
     color: rebeccapurple;
+    font-size: 2em;
+    margin: 0.5em auto 0.25em;
+    text-align: center;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+main h2 {
+    font-size: 1.2em;
+    width: 401px;
+}
+main .message {
+    float: right;
 }
 .memory-grid{ 
     display:flex;
@@ -16,4 +36,21 @@ h1 {
     width: 100px;
     height: 100px;
     margin:1px
+    
+}
+@media screen and (min-width: 630px){
+    main h2 {
+        font-size: 1.2em;
+        width: 601px;
+    }
+    .memory-grid{ 
+
+        height: 615px;
+        width: 615px;
+    }
+    .memory-grid img{
+        width: 150px;
+        height: 150px;        
+    }
+
 }

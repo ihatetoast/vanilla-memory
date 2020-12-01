@@ -74,15 +74,16 @@ window.addEventListener('load', function() {
     // DOM elements
     const grid = document.getElementById("memory-grid");
     const message = document.getElementById("message");
-    const score = document.getElementById("score");
+    const triesDom = document.getElementById("tries");
+    const cards = document.querySelectorAll("img");
 
     // arrays for comparison. emptied after two cards picked
     let pickedCards = [];
     let pickedCardsId=[];
 
-    // arr to keep track of game
+    // vars to keep track of game 
     let cardsPlayed = [];
-
+    let tries = 0;
     function getRandoIdx(arr){
         return arr[Math.floor(Math.random() * arr.length)];
     }
@@ -126,7 +127,9 @@ window.addEventListener('load', function() {
             message.textContent = "Congrats, fancy pants."
         }
     }
+    var el = document.querySelectorAll('#site-nav__link-id');
 
+    
     function pickCard(){
         const cardId = this.getAttribute('data-id');
         // alert(cardId)
@@ -137,13 +140,13 @@ window.addEventListener('load', function() {
         // "flip" card over by switching src
         this.setAttribute('src', cardsArr[cardId].img);
         if(pickedCards.length === 2){
-            // console.log("two picked");
             setTimeout(()=>compareCards(), 500);
             
         }
     }
 
-    function fillGrid(){
+    function createGame(){
+        triesDom.textContent = tries;
         cardsArr.forEach((el, i)=>{
             const card = document.createElement('img');
             card.setAttribute('src', './images/question-mark.JPG');
@@ -152,6 +155,6 @@ window.addEventListener('load', function() {
             grid.appendChild(card);
         })
     }
-    fillGrid();
+    createGame();
 })
 
