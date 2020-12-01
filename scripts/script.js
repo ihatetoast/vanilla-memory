@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    console.log("ready. content, scripts, assets loaded");
+    //when it's done, have a button to replay
 
 
     const cardsArr = [
@@ -93,7 +93,6 @@ window.addEventListener('load', function() {
             const j = Math.floor(Math.random() * (i + 1));
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-    
     }
     shuffleArr(cardsArr);
     function handleMessages(res){
@@ -127,8 +126,6 @@ window.addEventListener('load', function() {
             message.textContent = "Congrats, fancy pants."
         }
     }
-    var el = document.querySelectorAll('#site-nav__link-id');
-
     
     function pickCard(){
         const cardId = this.getAttribute('data-id');
@@ -141,7 +138,6 @@ window.addEventListener('load', function() {
         this.setAttribute('src', cardsArr[cardId].img);
         if(pickedCards.length === 2){
             setTimeout(()=>compareCards(), 500);
-            
         }
     }
 
