@@ -84,7 +84,7 @@ window.addEventListener('load', function() {
     // vars to keep track of game 
     let cardsPlayed = [];
     let tries = 0;
-    function getRandoIdx(arr){
+    function getRandoEl(arr){
         return arr[Math.floor(Math.random() * arr.length)];
     }
     // Fisher yates /   Durstenfeld shuffle
@@ -95,36 +95,59 @@ window.addEventListener('load', function() {
         }
     }
     shuffleArr(cardsArr);
-    function handleMessages(res){
-        message.textContent = getRandoIdx(res === "success" ? successMessages : failMessages)
-        setTimeout(()=>{
-            message.textContent = ""
-        }, 1000);
+    function resetGame(){
+        tries = 0;
+        pickedCards = [];
+        pickedCardsId=[];
+        message.textContent = ''
+        triesDom = 0;
     }
-
+    function handleMessages(res){
+        if(res === "success"){
+            if(cardsArr.length/2 === cardsPlayed.length ){
+               message.textContent = "You won. Game will reset, like it or not."
+                // allow btn to come up for yes and no.
+                // right now just reset after 3 seconds
+                setTimeout(()=>resetGame(), 3000);
+            } else {
+                message.textContent = getRandoEl(successMessages);
+                setTimeout(()=>{
+                    message.textContent = ""
+                }, 1000);
+            }
+           
+        }else{
+            message.textContent = getRandoEl(failMessages);
+            setTimeout(()=>{
+                message.textContent = ""
+            }, 1000);
+        }
+        
+        
+    }
     function compareCards(){
         // get the images, so i can replace srcs
         const cards = document.querySelectorAll('img');
         const cardOne = pickedCardsId[0];
         const cardTwo = pickedCardsId[1];
         if(pickedCards[0] === pickedCards[1]){
-            handleMessages('success')
+            
             cardsPlayed.push(pickedCards)
             // use a blank card to hold the space:
             cards[cardOne].setAttribute('src', './images/blank-card.JPG');
             cards[cardTwo].setAttribute('src', './images/blank-card.JPG');
-
+            handleMessages('success');
         }else{
-            handleMessages('fail')
+           
             cards[cardOne].setAttribute('src', './images/question-mark.JPG');
             cards[cardTwo].setAttribute('src', './images/question-mark.JPG');
+            handleMessages('fail')
         }
-        pickedCards = []
-        pickedCardsId = []
-        score.textContent = cardsPlayed.length;
-        if(cardsArr.length/2 === cardsPlayed.length){
-            message.textContent = "Congrats, fancy pants."
-        }
+        pickedCards = [];
+        pickedCardsId = [];
+        tries ++;
+        triesDom.textContent = tries;
+
     }
     
     function pickCard(){
@@ -137,7 +160,9 @@ window.addEventListener('load', function() {
         // "flip" card over by switching src
         this.setAttribute('src', cardsArr[cardId].img);
         if(pickedCards.length === 2){
-            setTimeout(()=>compareCards(), 500);
+            setTimeout(()=>{
+                compareCards();
+            }, 500);
         }
     }
 
