@@ -31,7 +31,8 @@ main .message {
     height: 408px;
     width: 408px;
 }
- button {
+#resetBtn {
+    display:none;
     position: absolute;
     width: 152px;
     height: 32px;
@@ -83,7 +84,7 @@ main .message {
         height: 608px;
         width: 608px;
     }
-    button{
+    #resetBtn{
     width: 230px;
     height: 50px;
     font-size: 1.5em;

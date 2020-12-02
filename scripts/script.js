@@ -1,6 +1,22 @@
 window.addEventListener('load', function() {
     //when it's done, have a button to replay
-
+    const XcardsArr = [
+        {
+            name: "ball", 
+            img: './images/ball.JPG'
+        },
+        {
+            name: "ball", 
+            img: './images/ball.JPG'
+        },
+        {
+            name: "banana", 
+            img: './images/banana.JPG'
+        },
+        {
+            name: "banana", 
+            img: './images/banana.JPG'
+        }]
 
     const cardsArr = [
         {
@@ -77,7 +93,9 @@ window.addEventListener('load', function() {
     const triesDom = document.getElementById("tries");
     const overlay = document.querySelector(".grid-overlay");
     const game = document.querySelector(".grid-wrapper");
+    const btn = document.getElementById('resetBtn')
 
+    
     // arrays for comparison. emptied after two cards picked
     let pickedCards = [];
     let pickedCardsId=[];
@@ -96,21 +114,36 @@ window.addEventListener('load', function() {
         }
     }
     shuffleArr(cardsArr);
+
     function resetGame(){
+       btn.style.display = 'none'
         tries = 0;
         pickedCards = [];
         pickedCardsId=[];
+        cardsPlayed=[]
         message.textContent = ''
-        triesDom = 0;
+        triesDom.textContent = 0;
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild);
+        }
+        setTimeout(()=>{
+            cardsArr.forEach((el, i)=>{
+                const card = document.createElement('img');
+                card.setAttribute('src', './images/question-mark.JPG');
+                card.setAttribute('data-id', i);
+                card.addEventListener('click', pickCard)
+                grid.appendChild(card);
+            });
+        }, 500);
+        
+        
     }
     function handleMessages(res){
         if(res === "success"){
             if(cardsArr.length/2 === cardsPlayed.length ){
                message.textContent = "You won."
-                const resetBtn = document.createElement('button');
-               resetBtn.textContent = "Play again?";
-               game.appendChild(resetBtn)
-                // setTimeout(()=>resetGame(), 3000);
+                btn.style.display = 'block'  
+              
             } else {
                 message.textContent = getRandoEl(successMessages);
                 setTimeout(()=>{
@@ -175,15 +208,19 @@ window.addEventListener('load', function() {
     }
 
     function createGame(){
-        triesDom.textContent = tries;
+  
+        
         cardsArr.forEach((el, i)=>{
             const card = document.createElement('img');
             card.setAttribute('src', './images/question-mark.JPG');
             card.setAttribute('data-id', i);
             card.addEventListener('click', pickCard)
             grid.appendChild(card);
-        })
+        });
+        triesDom.textContent = tries;
+       
     }
     createGame();
+    btn.addEventListener("click", resetGame);
 })
 
