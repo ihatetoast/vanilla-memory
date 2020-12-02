@@ -75,7 +75,8 @@ window.addEventListener('load', function() {
     const grid = document.getElementById("memory-grid");
     const message = document.getElementById("message");
     const triesDom = document.getElementById("tries");
-    const cards = document.querySelectorAll("img");
+    const overlay = document.querySelector(".grid-overlay");
+    const game = document.querySelector(".grid-wrapper");
 
     // arrays for comparison. emptied after two cards picked
     let pickedCards = [];
@@ -105,10 +106,11 @@ window.addEventListener('load', function() {
     function handleMessages(res){
         if(res === "success"){
             if(cardsArr.length/2 === cardsPlayed.length ){
-               message.textContent = "You won. Game will reset, like it or not."
-                // allow btn to come up for yes and no.
-                // right now just reset after 3 seconds
-                setTimeout(()=>resetGame(), 3000);
+               message.textContent = "You won."
+                const resetBtn = document.createElement('button');
+               resetBtn.textContent = "Play again?";
+               game.appendChild(resetBtn)
+                // setTimeout(()=>resetGame(), 3000);
             } else {
                 message.textContent = getRandoEl(successMessages);
                 setTimeout(()=>{
@@ -119,7 +121,7 @@ window.addEventListener('load', function() {
         }else{
             message.textContent = getRandoEl(failMessages);
             setTimeout(()=>{
-                message.textContent = ""
+                message.textContent = "";
             }, 1000);
         }
         
@@ -136,9 +138,13 @@ window.addEventListener('load', function() {
             // use a blank card to hold the space:
             cards[cardOne].setAttribute('src', './images/blank-card.JPG');
             cards[cardTwo].setAttribute('src', './images/blank-card.JPG');
+            // remove evt listener so it can't be reflipped
+            cards[cardOne].removeEventListener("click", pickCard, false);
+            cards[cardTwo].removeEventListener("click", pickCard, false);
+
             handleMessages('success');
         }else{
-           
+
             cards[cardOne].setAttribute('src', './images/question-mark.JPG');
             cards[cardTwo].setAttribute('src', './images/question-mark.JPG');
             handleMessages('fail')
@@ -147,6 +153,7 @@ window.addEventListener('load', function() {
         pickedCardsId = [];
         tries ++;
         triesDom.textContent = tries;
+        overlay.classList.add('hidden');
 
     }
     
@@ -160,6 +167,7 @@ window.addEventListener('load', function() {
         // "flip" card over by switching src
         this.setAttribute('src', cardsArr[cardId].img);
         if(pickedCards.length === 2){
+            overlay.classList.remove('hidden')
             setTimeout(()=>{
                 compareCards();
             }, 500);
